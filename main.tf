@@ -17,8 +17,9 @@ provider "aws" {
   //  If you have entered your credentials in AWS CLI before, you do not need to use these arguments.
 }
 locals {
-  github-repo = "https://github.com/davidclarusway/project-204.git"
-  github-file-url = "https://raw.githubusercontent.com/davidclarusway/project-204/master/"
+  github-repo = "https://github.com/XeniyaFesenko/204-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql-Terraform.git"
+  github-file-url = "https://raw.githubusercontent.com/XeniyaFesenko/204-docker-swarm-deployment-of-phonebook-app-on-python-flask-mysql-Terraform/main/
+
 }
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {
@@ -110,7 +111,7 @@ data "template_file" "worker" {
   EOF
 }
 resource "aws_ecr_repository" "ecr-repo" {
-  name                 = "davids-clarusway-repo/phonebook-app"
+  name                 = "xeniyas-clarusway-repo/phonebook-app"
   image_tag_mutability = "MUTABLE"
   image_scanning_configuration {
     scan_on_push = false
@@ -163,7 +164,7 @@ resource "aws_iam_role" "ec2fulltoecr" {
 resource "aws_instance" "docker-machine-leader-manager" {
   ami             = "ami-087c17d1fe0178315"
   instance_type   = "t2.micro"
-  key_name        = "davidskey"
+  key_name        = "NewKey1"
   root_block_device {
       volume_size = 16
   }  
@@ -172,13 +173,13 @@ resource "aws_instance" "docker-machine-leader-manager" {
   iam_instance_profile = aws_iam_instance_profile.ec2ecr-profile.name
   user_data = data.template_file.leader-master.rendered
   tags = {
-    Name = "Davids-Docker-Swarm-Leader-Manager"
+    Name = "Xeniyas-Docker-Swarm-Leader-Manager"
   }
 }
 resource "aws_instance" "docker-machine-managers" {
   ami             = "ami-087c17d1fe0178315"
   instance_type   = "t2.micro"
-  key_name        = "davidskey"
+  key_name        = "NewKey1"
   //  Write your pem file name
   security_groups = ["test-docker-swarm-sec-gr"]
   iam_instance_profile = aws_iam_instance_profile.ec2ecr-profile.name
@@ -192,7 +193,7 @@ resource "aws_instance" "docker-machine-managers" {
 resource "aws_instance" "docker-machine-workers" {
   ami             = "ami-087c17d1fe0178315"
   instance_type   = "t2.micro"
-  key_name        = "davidskey"
+  key_name        = "NewKey1"
   //  Write your pem file name
   security_groups = ["test-docker-swarm-sec-gr"]
   iam_instance_profile = aws_iam_instance_profile.ec2ecr-profile.name
